@@ -43,6 +43,7 @@ export default {
       this.$store.dispatch('comment/commentGet', postId);
     } else {
       console.error('No post ID provided in query.');
+      alert('エラーが起きました。')
     };
   },
   data() {

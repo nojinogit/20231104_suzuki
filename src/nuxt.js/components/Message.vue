@@ -21,16 +21,23 @@ export default {
   props: ['posts'],
   methods: {
     async addLike(postId) {
-      let user = firebase.auth().currentUser;
-      const sendData = {
-        uid: user.uid,
-        post_id: postId,
-      };
-      await this.$axios.post("http://localhost/api/add", sendData);
-      await this.$store.dispatch('post/getPost');
-      await this.$store.dispatch('comment/commentPost', postId);
-    },
+      try {
+        let user = firebase.auth().currentUser;
+        const sendData = {
+          uid: user.uid,
+          post_id: postId,
+        };
+        await this.$axios.post("http://localhost/api/add", sendData);
+        await this.$store.dispatch('post/getPost');
+        await this.$store.dispatch('comment/commentPost', postId);
+      } catch (error) {
+        console.error(error);
+        alert('エラーが起きました。');
+      }
+    }
+    ,
     async removeLike(postId) {
+      try {
       let user = firebase.auth().currentUser;
       const sendData = {
         uid: user.uid,
@@ -39,14 +46,23 @@ export default {
       await this.$axios.post("http://localhost/api/remove", sendData);
       await this.$store.dispatch('post/getPost');
       await this.$store.dispatch('comment/commentPost', postId);
+    } catch (error){
+      console.error(error);
+        alert('エラーが起きました。');
+    }
     },
     async deletePost(postId) {
+      try{
       const sendData = {
         post_id: postId,
       };
       await this.$axios.post("http://localhost/api/delete", sendData);
       await this.$store.dispatch('post/getPost');
       this.$router.push('/Home')
+    } catch(error){
+      console.error(error);
+      alert('エラーが起きました。');
+    }
     },
   },
 };
